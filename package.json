@@ -4,7 +4,8 @@
   "description": "Learning industry best practices for web development by building a travel website",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack",
+    "dev": "webpack serve",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,13 +21,16 @@
   "devDependencies": {
     "autoprefixer": "^10.4.4",
     "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
     "postcss-import": "^14.1.0",
     "postcss-loader": "^6.2.1",
+    "postcss-mixins": "^9.0.2",
     "postcss-nested": "^5.0.6",
     "postcss-simple-vars": "^6.0.3",
     "style-loader": "^3.3.1",
     "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
     "normalize.css": "^8.0.1"
