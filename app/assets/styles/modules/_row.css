@@ -5,6 +5,26 @@
         margin-bottom: 1rem;
     }
 
+    &--gutters {
+        margin-right: -65px;
+    }
+
+    &--gutters-large {
+        margin-right: -100px;
+    }
+
+    &--gutters > div {
+        padding-right: 65px;
+    }
+
+    &--gutters-large > div {
+        padding-right: 0px;
+
+        mixin atSmall {
+            padding-right: 100px;
+        }
+    }
+
     @mixin atMedium {
         & {
             display: flex;
@@ -21,15 +41,19 @@
         &__medium-4--larger {
             width: 37%;
         }
+
+        &__medium-6 {
+            width: 50%;
+        }
     
         &__medium-8 {
             width: 66.66%;
-            padding-left: 65px;
+            /* padding-left: 65px; */
         }
 
         &__medium-8--smaller {
             width: 63%;
-            padding-left: 65px;
+            /* padding-left: 65px; */
         }
     }
 }
