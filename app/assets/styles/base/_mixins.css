@@ -15,9 +15,3 @@
         @mixin-content;
     }
 }
-
-@define-mixin clearfix {
-    content: "";
-    display: table;
-    clear: both;
-}
