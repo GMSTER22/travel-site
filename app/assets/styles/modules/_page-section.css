@@ -26,6 +26,11 @@
         color: #fff;
     }
 
+    &__less-margin {
+        margin-bottom: 1.3rem;
+        margin-top: 0;
+    }
+
     &--testimonials {
         background-color: #e0e6ef;
 
