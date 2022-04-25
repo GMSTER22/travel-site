@@ -1,5 +1,9 @@
+const currentTask = process.env.npm_lifecycle_event;
 const path = require("path");
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { template } = require("lodash");
 
 const postCSSPlugins = [
     require("postcss-import"),
@@ -9,14 +13,31 @@ const postCSSPlugins = [
     require("autoprefixer")
 ]
 
-module.exports = {
+let cssConfig = {
+    test: /\.css$/i,
+    use: [{loader: "css-loader", options: {url: false}}, {loader: "postcss-loader", options: { postcssOptions: {plugins: postCSSPlugins}} }]
+}
+
+let config = {
     entry: "./app/assets/scripts/App.js",
-    output: {
+    plugins: [new HtmlWebpackPlugin({filename: "index.html", template: "./app/index.html"})],
+    module: {
+        rules: [
+            cssConfig
+        ]
+    },
+}
+
+if (currentTask == "dev") {
+    cssConfig.use.unshift({loader: "style-loader"});
+
+    config.output = {
         filename: "bundled.js",
         path: path.resolve(__dirname, "app"),
         clean: true,
-    }, 
-    devServer: {
+    }
+
+    config.devServer = {
         watchFiles: ('./app/**/*.html'),
         static: {
             directory: path.resolve(__dirname, "app"),
@@ -26,21 +47,31 @@ module.exports = {
         port: 3000,
         host: "0.0.0.0",
         // host: "192.168.1.242"
-    },
-    mode: "development",
-    // watch: true,  (no more need for watch true after installing and using devServer)
-    module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: [{loader: "style-loader"},{loader: "css-loader", options: {url: false}}, {loader: "postcss-loader", options: { postcssOptions: {plugins: postCSSPlugins}} }]
-            }
-        ]
-    },
-    // plugins: [
-    //     new HtmlWebpackPlugin({
-    //         title: "Webpack App",
-    //         filename: "index.html",
-    //     })
-    // ]
+    }
+
+    config.mode = "development"
 }
+
+if (currentTask == "build") {
+    cssConfig.use.unshift(MiniCssExtractPlugin.loader);
+
+    config.output = {
+        filename: "[name].[chunkhash].js",
+        chunkFilename: "[name].[chunkhash].js",
+        path: path.resolve(__dirname, "dist"),
+        clean: true,
+    }
+
+    config.mode = "production"
+
+    config.optimization = {
+        splitChunks: {
+          chunks: 'all'
+        },
+        minimizer: [`...`, new CssMinimizerPlugin()]
+    }
+
+    config.plugins.push(new MiniCssExtractPlugin({filename: "styles.[chunkhash].css"}));
+}
+
+module.exports = config;
