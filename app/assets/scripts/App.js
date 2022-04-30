@@ -4,8 +4,6 @@ import MobileMenu from "./module/mobileMenu";
 import RevealOnScroll from "./module/RevealOnScroll";
 import StickyHeader from "./module/StickyHeader";
 
-alert("bou")
-
 
 let stickyHeader = new StickyHeader();
 
